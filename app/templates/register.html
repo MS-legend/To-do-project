@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "_form_errors.html" import render_field_with_errors, render_form_errors %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <h2>Регистрация нового пользователя</h2>
+    <form method="POST" action="{{ url_for('main.register') }}" novalidate> {# <--- ИЗМЕНЕНО ЗДЕСЬ #}
+        {{ form.hidden_tag() }}
+        {{ render_form_errors(form) }}
+
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+            {{ render_field_with_errors(form.username) }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {{ render_field_with_errors(form.email) }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {{ render_field_with_errors(form.password) }}
+        </div>
+        <div class="form-group">
+            {{ form.password2.label }}
+            {{ form.password2(class="form-control") }}
+            {{ render_field_with_errors(form.password2) }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    <p>Уже есть аккаунт? <a href="{{ url_for('main.login') }}">Войдите!</a></p> {# <--- И ЗДЕСЬ ТОЖЕ #}
+{% endblock %}

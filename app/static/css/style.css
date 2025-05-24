@@ -1,0 +1,234 @@
+/* app/static/css/style.css */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    margin-bottom: 20px;
+}
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.navbar-menu a, .navbar-user {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 15px;
+}
+.navbar-menu a:hover {
+    color: #ddd;
+}
+.navbar-user {
+    font-style: italic;
+}
+
+
+/* Content Area */
+.content-area {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-height: 70vh;
+}
+
+/* Alerts (flash messages) */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+.alert-warning {
+     color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+.form-control {
+    display: block;
+    width: 95%; /* Чуть меньше для padding */
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+.form-check-input {
+    margin-right: 5px;
+}
+.errors {
+    list-style: none;
+    padding: 0;
+    margin-top: .25rem;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn-primary { color: #fff; background-color: #007bff; border-color: #007bff; }
+.btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
+.btn-secondary { color: #fff; background-color: #6c757d; border-color: #6c757d; }
+.btn-secondary:hover { background-color: #545b62; border-color: #545b62; }
+.btn-success { color: #fff; background-color: #28a745; border-color: #28a745; }
+.btn-success:hover { background-color: #1e7e34; border-color: #1e7e34; }
+.btn-danger { color: #fff; background-color: #dc3545; border-color: #dc3545; }
+.btn-danger:hover { background-color: #bd2130; border-color: #bd2130; }
+.btn-warning { color: #212529; background-color: #ffc107; border-color: #ffc107; }
+.btn-warning:hover { background-color: #d39e00; border-color: #d39e00; }
+.btn-sm { padding: .25rem .5rem; font-size: .875rem; line-height: 1.5; border-radius: .2rem; }
+
+
+/* Task List */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.filters a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+.filters a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+.task-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Чтобы кнопки были внизу если описание длинное */
+    flex-wrap: wrap; /* Для мобильных */
+}
+.task-item.task-done {
+    background-color: #e9ecef;
+    border-left: 5px solid #28a745;
+}
+.task-item.task-done .task-title {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+.task-details {
+    flex-grow: 1;
+    margin-right: 15px; /* Отступ от кнопок */
+}
+.task-title {
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.task-description {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 8px;
+    white-space: pre-wrap; /* Сохранять переносы строк */
+}
+.task-meta {
+    font-size: 0.8em;
+    color: #777;
+}
+.task-actions {
+    flex-shrink: 0; /* Кнопки не будут сжиматься */
+    display: flex;
+    gap: 5px; /* Пространство между кнопками */
+    align-items: center; /* Выровнять кнопки по центру */
+}
+.task-actions form {
+    display: inline-block; /* Для форм с одной кнопкой */
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    color: #777;
+}

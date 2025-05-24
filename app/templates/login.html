@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "_form_errors.html" import render_field_with_errors, render_form_errors %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <h2>Вход в систему</h2>
+    <form method="POST" action="{{ url_for('main.login') }}" novalidate>  {# <--- ИЗМЕНЕНО ЗДЕСЬ #}
+        {{ form.hidden_tag() }} <!-- CSRF токен -->
+        {{ render_form_errors(form) }}
+
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+            {{ render_field_with_errors(form.username) }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {{ render_field_with_errors(form.password) }}
+        </div>
+        <div class="form-group form-check">
+            {{ form.remember_me(class="form-check-input") }}
+            {{ form.remember_me.label(class="form-check-label") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    <p>Нет аккаунта? <a href="{{ url_for('main.register') }}">Зарегистрируйтесь!</a></p> {# <--- И ЗДЕСЬ ТОЖЕ #}
+{% endblock %}

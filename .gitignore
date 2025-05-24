@@ -1,0 +1,23 @@
+# Виртуальное окружение
+ve/
+venv/
+env/
+.env
+*.pyc
+__pycache__/
+
+# Файлы IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Файлы SQLite базы данных (если не хочешь ее публиковать)
+# todo.db
+# todo_dev.db
+
+# Папка instance (для секретных конфигураций)
+instance/
+
+# Логи и временные файлы
+*.log

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Мои Задачи{% endblock %}
+
+{% block content %}
+    <div class="header-actions">
+        <h2>Список задач</h2>
+        <div class="filters">
+            Фильтр:
+            <a href="{{ url_for('main.index', filter='all') }}" class="{{ 'active' if current_filter == 'all' }}">Все</a> |
+            <a href="{{ url_for('main.index', filter='active') }}" class="{{ 'active' if current_filter == 'active' }}">Активные</a> |
+            <a href="{{ url_for('main.index', filter='done') }}" class="{{ 'active' if current_filter == 'done' }}">Выполненные</a>
+        </div>
+    </div>
+
+    {% if tasks %}
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="task-item {% if task.done %}task-done{% endif %}">
+                    <div class="task-details">
+                        <h3 class="task-title">{{ task.title }}</h3>
+                        {% if task.description %}
+                            <p class="task-description">{{ task.description }}</p>
+                        {% endif %}
+                        <p class="task-meta">
+                            Создана: {{ task.created_at.strftime('%d.%m.%Y %H:%M') if task.created_at else 'N/A' }}
+                            {% if task.due_date %}
+                                | Срок: {{ task.due_date.strftime('%d.%m.%Y') }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="task-actions">
+                        <form action="{{ url_for('main.toggle_task_status', task_id=task.id, filter=current_filter) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm {{ 'btn-warning' if task.done else 'btn-success' }}">
+                                {{ 'Сделать активной' if task.done else 'Выполнено' }}
+                            </button>
+                        </form>
+                        <a href="{{ url_for('main.edit_task', task_id=task.id) }}" class="btn btn-sm btn-primary">Редакт.</a>
+                        <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Удалить задачу «{{ task.title }}»?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет задач. <a href="{{ url_for('main.add_task') }}">Добавить первую?</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% macro render_field_with_errors(field) %}
+    {% if field.errors %}
+        <ul class="errors">
+        {% for error in field.errors %}
+            <li class="error-message">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_form_errors(form) %}
+    {% if form.errors and form.errors.get('csrf_token') %}
+        <div class="alert alert-danger">
+            Ошибка CSRF: {{ form.errors.get('csrf_token')|join(', ') }} Попробуйте обновить страницу.
+        </div>
+    {% endif %}
+    {# Можно добавить общие ошибки формы, если они есть и не привязаны к полю #}
+    {% if form.errors and not form.errors.get('csrf_token') %}
+        {% for field_name, field_errors in form.errors.items() %}
+            {% if field_name != 'csrf_token' and field_name not in form._fields %} {# Общие ошибки формы #}
+                 <div class="alert alert-danger">
+                    {{ field_name|capitalize }}: {{ field_errors|join(', ') }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
