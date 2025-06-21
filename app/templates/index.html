@@ -5,11 +5,37 @@
 {% block content %}
     <div class="header-actions">
         <h2>Список задач</h2>
+        <form method="GET" action="{{ url_for('main.index') }}" class="search-form">
+            <input type="text" name="search" placeholder="Поиск по задачам..." value="{{ search_query or '' }}">
+            {% if current_filter and current_filter != 'all' %}
+                <input type="hidden" name="filter" value="{{ current_filter }}">
+            {% endif %}
+            {% if current_sort and current_sort != 'created_desc' %}
+                <input type="hidden" name="sort" value="{{ current_sort }}">
+            {% endif %}
+            <button type="submit" class="btn btn-sm btn-info">Найти</button>
+            {% if search_query %}
+                <a href="{{ url_for('main.index', filter=current_filter, sort=current_sort) }}" class="btn btn-sm btn-warning">Сбросить поиск</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="controls-panel">
         <div class="filters">
-            Фильтр:
-            <a href="{{ url_for('main.index', filter='all') }}" class="{{ 'active' if current_filter == 'all' }}">Все</a> |
-            <a href="{{ url_for('main.index', filter='active') }}" class="{{ 'active' if current_filter == 'active' }}">Активные</a> |
-            <a href="{{ url_for('main.index', filter='done') }}" class="{{ 'active' if current_filter == 'done' }}">Выполненные</a>
+            <strong>Фильтр по статусу:</strong>
+            <a href="{{ url_for('main.index', search=search_query, sort=current_sort, filter='all') }}" class="btn btn-sm {{ 'btn-primary active' if current_filter == 'all' else 'btn-outline-primary' }}">Все</a>
+            <a href="{{ url_for('main.index', search=search_query, sort=current_sort, filter='active') }}" class="btn btn-sm {{ 'btn-primary active' if current_filter == 'active' else 'btn-outline-primary' }}">Активные</a>
+            <a href="{{ url_for('main.index', search=search_query, sort=current_sort, filter='done') }}" class="btn btn-sm {{ 'btn-primary active' if current_filter == 'done' else 'btn-outline-primary' }}">Выполненные</a>
+        </div>
+
+        <div class="sorting">
+            <strong>Сортировать по:</strong>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='created_desc') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'created_desc' else 'btn-outline-secondary' }}">Новые</a>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='created_asc') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'created_asc' else 'btn-outline-secondary' }}">Старые</a>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='due_date_asc') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'due_date_asc' else 'btn-outline-secondary' }}">Сроку (ближ.)</a>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='due_date_desc') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'due_date_desc' else 'btn-outline-secondary' }}">Сроку (дальн.)</a>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='status_pending_first') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'status_pending_first' else 'btn-outline-secondary' }}">Сначала активные</a>
+            <a href="{{ url_for('main.index', search=search_query, filter=current_filter, sort='status_done_first') }}" class="btn btn-sm {{ 'btn-secondary active' if current_sort == 'status_done_first' else 'btn-outline-secondary' }}">Сначала выполненные</a>
         </div>
     </div>
 
@@ -22,21 +48,24 @@
                         {% if task.description %}
                             <p class="task-description">{{ task.description }}</p>
                         {% endif %}
+                        {% if task.category %}
+                            <p class="task-category"><em>Категория: {{ task.category }}</em></p>
+                        {% endif %}
                         <p class="task-meta">
                             Создана: {{ task.created_at.strftime('%d.%m.%Y %H:%M') if task.created_at else 'N/A' }}
                             {% if task.due_date %}
-                                | Срок: {{ task.due_date.strftime('%d.%m.%Y') }}
+                                | Срок: <span class="due-date">{{ task.due_date.strftime('%d.%m.%Y') }}</span>
                             {% endif %}
                         </p>
                     </div>
                     <div class="task-actions">
-                        <form action="{{ url_for('main.toggle_task_status', task_id=task.id, filter=current_filter) }}" method="POST" style="display: inline;">
+                        <form action="{{ url_for('main.toggle_task_status', task_id=task.id, filter=current_filter, sort=current_sort, search=search_query) }}" method="POST" style="display: inline;">
                             <button type="submit" class="btn btn-sm {{ 'btn-warning' if task.done else 'btn-success' }}">
                                 {{ 'Сделать активной' if task.done else 'Выполнено' }}
                             </button>
                         </form>
                         <a href="{{ url_for('main.edit_task', task_id=task.id) }}" class="btn btn-sm btn-primary">Редакт.</a>
-                        <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Удалить задачу «{{ task.title }}»?');">
+                        <form action="{{ url_for('main.delete_task', task_id=task.id, filter=current_filter, sort=current_sort, search=search_query) }}" method="POST" style="display: inline;" onsubmit="return confirm('Удалить задачу «{{ task.title }}»?');">
                             <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
                         </form>
                     </div>
@@ -44,6 +73,10 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>У вас пока нет задач. <a href="{{ url_for('main.add_task') }}">Добавить первую?</a></p>
+        {% if search_query %}
+             <p>По вашему запросу «<strong>{{ search_query }}</strong>» ничего не найдено. <a href="{{ url_for('main.index', filter=current_filter, sort=current_sort) }}">Сбросить поиск?</a></p>
+        {% else %}
+            <p>У вас пока нет задач. <a href="{{ url_for('main.add_task') }}">Добавить первую?</a></p>
+        {% endif %}
     {% endif %}
 {% endblock %}

@@ -31,5 +31,6 @@ class RegistrationForm(FlaskForm):
 class TaskForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired(), Length(min=1, max=140)])
     description = TextAreaField('Описание (необязательно)', validators=[Length(max=500)])
-    due_date = DateField('Срок выполнения (ГГГГ-ММ-ДД)', format='%Y-%m-%d', validators=[], render_kw={"placeholder": "ГГГГ-ММ-ДД"}) # Сделал необязательным
+    category = StringField('Категория', validators=[Length(max=50)], default='Общее') # <-- ИЗМЕНЕНО/ДОБАВЛЕНО (убрал "необязательно" из label, т.к. есть default)
+    due_date = DateField('Срок выполнения (ГГГГ-ММ-ДД)', format='%Y-%m-%d', validators=[], render_kw={"placeholder": "ГГГГ-ММ-ДД"})
     submit = SubmitField('Сохранить задачу')

@@ -19,6 +19,15 @@
             {{ form.description(class="form-control", rows="3", placeholder="Дополнительные детали...") }}
             {{ render_field_with_errors(form.description) }}
         </div>
+        
+        {# <!-- НОВОЕ ПОЛЕ ДЛЯ КАТЕГОРИИ --> #}
+        <div class="form-group">
+            {{ form.category.label }}
+            {{ form.category(class="form-control", placeholder="Например: Работа, Дом, Учеба") }}
+            {{ render_field_with_errors(form.category) }}
+        </div>
+        {# <!-- КОНЕЦ НОВОГО ПОЛЯ --> #}
+
         <div class="form-group">
             {{ form.due_date.label }}
             {{ form.due_date(class="form-control") }}
